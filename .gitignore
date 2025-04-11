@@ -1,0 +1,65 @@
+# Diretórios e arquivos do Maven
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Arquivos de log
+*.log
+
+# Configurações do VS Code
+.vscode/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+*.class
+
+# Arquivos gerados
+*.war
+*.jar
+*.ear
+
+# Configurações de ambiente
+*.env
+*.iml
+.idea/
+
+# Arquivos temporários
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Banco de dados (se houver dump ou arquivos locais)
+*.sql
+*.db
+
+# Arquivos do Tomcat (se estiver usando localmente no projeto)
+**/tomcat.*/work/
+**/tomcat.*/logs/
+**/tomcat.*/temp/
+**/tomcat.*/webapps/
+
+# Arquivos relacionados ao sistema operacional
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# IntelliJ / Eclipse (caso use junto com VS Code)
+*.iws
+*.ipr
+*.idea/
+*.project
+*.classpath
+.settings/
+
+# Arquivos do Spring Boot devtools (caso esteja usando)
+.spring-boot-devtools.properties
