@@ -1,4 +1,4 @@
-package br.com.alura.owasp.Retrofit;
+package br.com.alura.owasp.retrofit;
 
 import retrofit2.Call;
 import retrofit2.http.POST;

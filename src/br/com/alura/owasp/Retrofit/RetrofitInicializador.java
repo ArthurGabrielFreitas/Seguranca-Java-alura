@@ -1,4 +1,4 @@
-package br.com.alura.owasp.Retrofit;
+package br.com.alura.owasp.retrofit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
