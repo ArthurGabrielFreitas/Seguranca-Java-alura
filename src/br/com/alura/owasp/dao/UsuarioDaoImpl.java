@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
 import br.com.alura.owasp.model.Usuario;
@@ -15,17 +16,34 @@ public class UsuarioDaoImpl implements UsuarioDao {
 	private EntityManager manager;
 
 	public void salva(Usuario usuario) {
-		
+		transformaSenhaEmHash(usuario);
 		manager.persist(usuario);
+	}
+
+	private void transformaSenhaEmHash(Usuario usuario) {
+		String salto = BCrypt.gensalt();
+		String senhaHashed = BCrypt.hashpw(usuario.getSenha(), salto);
+		usuario.setSenha(senhaHashed);
 	}
 
 	public Usuario procuraUsuario(Usuario usuario) {
 		TypedQuery<Usuario> query =	manager.
-		 	createQuery("select u from Usuario u where u.email=:email and u.senha=:senha", Usuario.class);
+		 	createQuery("select u from Usuario u where u.email=:email", Usuario.class);
 		query.setParameter("email", usuario.getEmail());
-		query.setParameter("senha", usuario.getSenha());
 		Usuario usuarioRetornado = query.getResultList().stream().findFirst().orElse(null);
+		
+		if(validaSenhaComHash(usuario, usuarioRetornado)){
+			return usuarioRetornado;
+		}
 
-		return usuarioRetornado;
+		return null;
+	}
+
+	private boolean validaSenhaComHash(Usuario usuario, Usuario usuarioRetornado) {
+		if(usuarioRetornado == null){
+			return false;
+		} else {
+			return BCrypt.checkpw(usuario.getSenha(), usuarioRetornado.getSenha());
+		}
 	}
 }
