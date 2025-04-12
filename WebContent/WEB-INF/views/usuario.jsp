@@ -28,6 +28,8 @@
 									<input type="password" name="senha" id="senha" tabindex="2"
 										class="form-control" placeholder="Senha" required="required">
 								</div>
+								<div class="g-recaptcha"
+									data-sitekey="6Lem2x0UAAAAAIM1vX3g4qk7j5b8a9f1c0r7e3d4"></div>
 								<div class="form-group" style="margin-top: 3%">
 									<div class="row">
 										<div class="col-sm-6 col-sm-offset-3">
