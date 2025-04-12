@@ -22,6 +22,7 @@ import br.com.alura.owasp.dao.UsuarioDao;
 import br.com.alura.owasp.model.Role;
 import br.com.alura.owasp.model.Usuario;
 import br.com.alura.owasp.retrofit.GoogleWebClient;
+import br.com.alura.owasp.validator.ImagemValidator;
 
 @Controller
 @Transactional
@@ -32,6 +33,9 @@ public class UsuarioController {
 
     @Autowired
     private GoogleWebClient cliente;
+
+    @Autowired
+    private ImagemValidator imagemValidator;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -56,13 +60,18 @@ public class UsuarioController {
             RedirectAttributes redirect, HttpServletRequest request,
             Model model, HttpSession session) throws IllegalStateException, IOException {
 
-        tratarImagem(imagem, usuarioRegistro, request);
-        usuarioRegistro.getRoles().add(new Role("ROLE_USER"));
+        boolean ehImagem = imagemValidator.tratarImagem(imagem, usuarioRegistro, request);
+        if (ehImagem) {
+            usuarioRegistro.getRoles().add(new Role("ROLE_USER"));
+    
+            dao.salva(usuarioRegistro);
+            session.setAttribute("usuario", usuarioRegistro);
+            model.addAttribute("usuario", usuarioRegistro);
+            return "usuarioLogado";
+        }
 
-        dao.salva(usuarioRegistro);
-        session.setAttribute("usuario", usuarioRegistro);
-        model.addAttribute("usuario", usuarioRegistro);
-        return "usuarioLogado";
+        redirect.addFlashAttribute("mensagem", "Arquivo não é uma imagem");
+            return "redirect:/usuario";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -99,12 +108,4 @@ public class UsuarioController {
         return "usuario";
     }
 
-    private void tratarImagem(MultipartFile imagem, Usuario usuario,
-            HttpServletRequest request) throws IllegalStateException, IOException {
-        usuario.setNomeImagem(imagem.getOriginalFilename());
-        File arquivo = new File(request.getServletContext().getRealPath(
-                "/image"), usuario.getNomeImagem());
-        imagem.transferTo(arquivo);
-
-    }
 }
